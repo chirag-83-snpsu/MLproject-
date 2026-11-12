@@ -1,0 +1,87 @@
+{
+  "model_name": "CredX Gradient Risk Estimator",
+  "version": "1.0.0",
+  "trained_at": "2026-11-12T06:45:15.062941",
+  "best_architecture": "RandomForest",
+  "benchmark_comparison": {
+    "LogisticRegression": {
+      "roc_auc": 0.8465099715099715,
+      "pr_auc": 0.5717149572243847,
+      "ks_stat": 0.5487637362637362,
+      "brier_score": 0.1021698420594051,
+      "f1_score": 0.5087719298245614
+    },
+    "RandomForest": {
+      "roc_auc": 0.8524114774114774,
+      "pr_auc": 0.578032176232008,
+      "ks_stat": 0.5580738705738706,
+      "brier_score": 0.1007432078186588,
+      "f1_score": 0.5108225108225108
+    },
+    "HistGradientBoosting": {
+      "roc_auc": 0.839565527065527,
+      "pr_auc": 0.5564467719431226,
+      "ks_stat": 0.5580738705738706,
+      "brier_score": 0.10947640885813242,
+      "f1_score": 0.512396694214876
+    }
+  },
+  "test_metrics": {
+    "roc_auc": 0.8543447293447293,
+    "ks_statistic": 0.5641025641025641,
+    "brier_score": 0.1022546255837179,
+    "confusion_matrix": [
+      [
+        583,
+        41
+      ],
+      [
+        66,
+        60
+      ]
+    ],
+    "test_sample_size": 750
+  },
+  "num_features": [
+    "person_age",
+    "person_income",
+    "person_emp_length",
+    "loan_amnt",
+    "loan_int_rate",
+    "loan_percent_income",
+    "credit_score",
+    "debt_to_income_ratio",
+    "revolving_utilization",
+    "delinq_2yrs",
+    "cb_person_cred_hist_length"
+  ],
+  "cat_features": [
+    "person_home_ownership",
+    "loan_intent",
+    "loan_grade",
+    "cb_person_default_on_file"
+  ],
+  "total_transformed_features": 30,
+  "top_global_features": {
+    "credit_score": 0.15567756571631966,
+    "revolving_utilization": 0.1251650223315845,
+    "loan_int_rate": 0.11976083862757725,
+    "debt_to_income_ratio": 0.0908847689137783,
+    "loan_percent_income": 0.07653264317937333,
+    "delinq_2yrs": 0.06019306929667738,
+    "person_income": 0.05655813775652202,
+    "loan_amnt": 0.04579727056285821,
+    "cb_person_default_on_file_N": 0.0449365640055816,
+    "cb_person_default_on_file_Y": 0.03718940956736526,
+    "person_emp_length": 0.03415108955106089,
+    "loan_grade_E": 0.03379874962944822,
+    "person_age": 0.029719847569137755,
+    "cb_person_cred_hist_length": 0.025407512413829048,
+    "loan_grade_F": 0.012428347239935845
+  },
+  "risk_thresholds": {
+    "low_risk_max_pd": 0.12,
+    "medium_risk_max_pd": 0.28,
+    "high_risk_max_pd": 0.55
+  }
+}

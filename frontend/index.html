@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CredX AI — Explainable Credit Risk & Underwriting Platform</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand-container">
+      <div class="brand-logo">CX</div>
+      <div class="brand-text">
+        <h1>CredX AI</h1>
+        <span>Risk & XAI Intelligence</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active" data-view="dashboard">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+        Portfolio Dashboard
+      </a>
+      <a class="nav-item" data-view="applications">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Applications Pipeline
+      </a>
+      <a class="nav-item" data-view="fairness">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+        Fairness & Bias Audit
+      </a>
+      <a class="nav-item" data-view="model-health">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        Model Health & Drift
+      </a>
+      <a class="nav-item" data-view="audit-trail">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Regulatory Audit Trail
+      </a>
+    </nav>
+
+    <!-- Role Switcher -->
+    <div class="user-widget">
+      <div style="font-size:0.75rem; color:#9ca3af; text-transform:uppercase; letter-spacing:0.04em;">Active RBAC Operator</div>
+      <div id="current-user-name" style="font-weight:600; font-size:0.9rem; color:#fff; margin-top:2px;">Sarah Jenkins</div>
+      <div id="current-user-role" style="font-size:0.75rem; color:#38bdf8; font-weight:600;">SENIOR UNDERWRITER</div>
+      
+      <select class="user-selector-select" id="role-switcher-select">
+        <option value="officer">Sarah (Senior Underwriter)</option>
+        <option value="analyst">David (Quantitative Risk)</option>
+        <option value="compliance">Elena (Compliance Lead)</option>
+        <option value="admin">Alexandra (Admin)</option>
+      </select>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-title">
+        <h2 id="current-view-title">Portfolio Risk & Underwriting Dashboard</h2>
+      </div>
+      <div class="topbar-actions">
+        <div style="font-size:0.8rem; color:#9ca3af; background:rgba(255,255,255,0.04); padding:6px 12px; border-radius:6px; border:1px solid var(--border-color);">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; margin-right:6px;"></span>
+          API Online &bull; SHAP Model v1.0.0
+        </div>
+        <button class="btn btn-primary" id="btn-open-new-app-modal">
+          <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          + New Loan Application
+        </button>
+      </div>
+    </header>
+
+    <!-- View: Dashboard -->
+    <section class="view-section active" id="view-dashboard">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title">Total Applications</div>
+          <div class="kpi-value" id="kpi-total-apps">--</div>
+          <div class="kpi-subtext">Active portfolio pipeline</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Approval Rate</div>
+          <div class="kpi-value" style="color:var(--accent-emerald);" id="kpi-approval-rate">--%</div>
+          <div class="kpi-subtext">Decided straight-through & human</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Avg Probability of Default</div>
+          <div class="kpi-value" style="color:var(--accent-cyan);" id="kpi-avg-pd">--%</div>
+          <div class="kpi-subtext">Calibrated portfolio default risk</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Requested Capital</div>
+          <div class="kpi-value" id="kpi-total-capital">--</div>
+          <div class="kpi-subtext">Total loan exposure</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Expected Loss (EL)</div>
+          <div class="kpi-value" style="color:var(--accent-amber);" id="kpi-expected-loss">--</div>
+          <div class="kpi-subtext">PD &times; LGD (45%) &times; EAD</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Loan Intent Distribution</div>
+              <div class="card-subtitle">Volume breakdown by stated credit purpose</div>
+            </div>
+          </div>
+          <div style="height: 240px;">
+            <canvas id="chart-loan-intent"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Risk Tier Distribution</div>
+              <div class="card-subtitle">Calibrated default categories</div>
+            </div>
+          </div>
+          <div style="height: 240px;">
+            <canvas id="chart-risk-tier"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Recent Underwriting Pipeline</div>
+            <div class="card-subtitle">Live applicant decisions and XAI statuses</div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Applicant Name</th>
+                <th>Requested Amount</th>
+                <th>Credit Score</th>
+                <th>Default Risk</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="recent-apps-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- View: Applications Pipeline -->
+    <section class="view-section" id="view-applications">
+      <div style="display:flex; justify-content:space-between; gap:16px;">
+        <input type="text" id="app-search-input" placeholder="Search applicant by name, email, or application #..." style="padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:#fff; width:340px;" oninput="loadApplications()">
+        <select id="app-status-filter" style="padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-sm); color:#fff;" onchange="loadApplications()">
+          <option value="">All Statuses</option>
+          <option value="SUBMITTED">Submitted</option>
+          <option value="ASSESSED">Assessed</option>
+          <option value="APPROVED">Approved</option>
+          <option value="REJECTED">Rejected</option>
+          <option value="ESCALATED">Escalated</option>
+        </select>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>App #</th>
+              <th>Applicant Name</th>
+              <th>Income</th>
+              <th>Loan Amount</th>
+              <th>Loan Intent</th>
+              <th>Bureau Score</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="applications-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- View: Applicant Detail & XAI -->
+    <section class="view-section" id="view-applicant-detail">
+      <div id="applicant-detail-container"></div>
+    </section>
+
+    <!-- View: Fairness & Bias Audit -->
+    <section class="view-section" id="view-fairness">
+      <div id="fairness-audit-container"></div>
+    </section>
+
+    <!-- View: Model Health & Drift -->
+    <section class="view-section" id="view-model-health">
+      <div id="model-health-container"></div>
+    </section>
+
+    <!-- View: Audit Trail -->
+    <section class="view-section" id="view-audit-trail">
+      <div class="card">
+        <div class="card-title">Immutable System & Decision Audit Trail</div>
+        <div class="card-subtitle">Real-time tamper-evident log of all operator logins, scoring assessments, and underwriter overrides.</div>
+        <div class="table-container" style="margin-top:14px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Operator</th>
+                <th>Action</th>
+                <th>Entity</th>
+                <th>Details</th>
+                <th>IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="audit-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: New Loan Application -->
+  <div class="modal-overlay" id="modal-new-app">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:12px;">
+        <h3 style="font-size:1.2rem; font-weight:700;">Submit Loan Application</h3>
+        <button id="btn-close-modal" style="background:none; border:none; color:#9ca3af; font-size:1.4rem; cursor:pointer;">&times;</button>
+      </div>
+
+      <form id="form-new-app">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Applicant Name *</label>
+            <input type="text" id="inp-name" required placeholder="e.g. Jonathan Hayes">
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="inp-email" required placeholder="j.hayes@example.com">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="inp-phone" placeholder="+1-555-019-2234">
+          </div>
+          <div class="form-group">
+            <label>Age (Years) *</label>
+            <input type="number" id="inp-age" required min="18" max="95" value="34">
+          </div>
+          <div class="form-group">
+            <label>Annual Gross Income ($) *</label>
+            <input type="number" id="inp-income" required min="10000" max="1000000" value="85000">
+          </div>
+          <div class="form-group">
+            <label>Employment Length (Years) *</label>
+            <input type="number" id="inp-emp" required min="0" max="50" step="0.5" value="5">
+          </div>
+          <div class="form-group">
+            <label>Home Ownership Status *</label>
+            <select id="inp-home" required>
+              <option value="MORTGAGE">MORTGAGE</option>
+              <option value="RENT">RENT</option>
+              <option value="OWN">OWN</option>
+              <option value="OTHER">OTHER</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Loan Intent *</label>
+            <select id="inp-intent" required>
+              <option value="DEBTCONSOLIDATION">DEBT CONSOLIDATION</option>
+              <option value="HOMEIMPROVEMENT">HOME IMPROVEMENT</option>
+              <option value="VENTURE">BUSINESS VENTURE</option>
+              <option value="EDUCATION">EDUCATION</option>
+              <option value="PERSONAL">PERSONAL</option>
+              <option value="MEDICAL">MEDICAL</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Requested Loan Principal ($) *</label>
+            <input type="number" id="inp-loan-amnt" required min="1000" max="60000" value="15000">
+          </div>
+          <div class="form-group">
+            <label>Offered Interest Rate (%) *</label>
+            <input type="number" id="inp-rate" required min="4" max="32" step="0.1" value="10.5">
+          </div>
+          <div class="form-group">
+            <label>Bureau Credit Score (FICO) *</label>
+            <input type="number" id="inp-score" required min="350" max="850" value="710">
+          </div>
+          <div class="form-group">
+            <label>Debt-to-Income (DTI %) *</label>
+            <input type="number" id="inp-dti" required min="5" max="80" value="28">
+          </div>
+          <div class="form-group">
+            <label>Revolving Line Utilization (%) *</label>
+            <input type="number" id="inp-util" required min="0" max="100" value="32.5">
+          </div>
+          <div class="form-group">
+            <label>Delinquencies (Past 2 Yrs)</label>
+            <input type="number" id="inp-delinq" min="0" max="10" value="0">
+          </div>
+          <div class="form-group">
+            <label>Prior Default on File</label>
+            <select id="inp-default">
+              <option value="N">No</option>
+              <option value="Y">Yes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Credit History Length (Yrs) *</label>
+            <input type="number" id="inp-hist" required min="1" max="40" value="8">
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px; border-top:1px solid var(--border-color); padding-top:16px;">
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal-new-app').classList.remove('active')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit & Run XAI Scoring &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
+

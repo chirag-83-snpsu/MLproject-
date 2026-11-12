@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  credx-app:
+    build: .
+    container_name: credx_ai_platform
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=credx-enterprise-risk-secret-key-super-secure-2026
+      - DATABASE_URL=sqlite:///./credx.db
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+      - ./ml:/app/ml
+      - ./credx.db:/app/credx.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+

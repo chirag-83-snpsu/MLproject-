@@ -1,0 +1,42 @@
+{
+  "fairness_audit": {
+    "Young (< 25)": {
+      "sample_size": 852,
+      "approved_count": 685,
+      "approval_rate": 0.804,
+      "average_predicted_pd": 0.1826,
+      "actual_default_rate": 0.1913,
+      "disparate_impact_ratio": 0.9769,
+      "passes_four_fifths_rule": true
+    },
+    "Core Workforce (25-60)": {
+      "sample_size": 3977,
+      "approved_count": 3273,
+      "approval_rate": 0.823,
+      "average_predicted_pd": 0.1664,
+      "actual_default_rate": 0.1634,
+      "disparate_impact_ratio": 1.0,
+      "passes_four_fifths_rule": true
+    },
+    "Senior (> 60)": {
+      "sample_size": 171,
+      "approved_count": 145,
+      "approval_rate": 0.848,
+      "average_predicted_pd": 0.1588,
+      "actual_default_rate": 0.1579,
+      "disparate_impact_ratio": 1.0303,
+      "passes_four_fifths_rule": true
+    }
+  },
+  "disparate_impact_summary": {
+    "reference_group": "Core Workforce (25-60)",
+    "young_cohort_dir": 0.9769,
+    "senior_cohort_dir": 1.0303,
+    "overall_fair_lending_compliance": true
+  },
+  "drift_analysis": {
+    "psi_metric": 0.00407,
+    "status": "STABLE",
+    "retraining_recommended": false
+  }
+}
